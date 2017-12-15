@@ -3,9 +3,11 @@ import os
 
 
 def start_flickr(phrases):
+    if not os.path.exists("download"):
+        os.makedirs("download")
     for phrase in phrases:
         if not os.path.exists(phrase):
-            os.makedirs(phrase)
+            os.makedirs("download/" + phrase)
         download.flickr.delay(1, 500, phrase)
 
 
