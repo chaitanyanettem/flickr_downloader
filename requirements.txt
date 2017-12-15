@@ -1,0 +1,4 @@
+requests==2.9.1
+celery==4.1.0
+configobj==5.0.6
+redis==2.10.6
