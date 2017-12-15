@@ -25,7 +25,8 @@ def flickr(page=1, per_page=500, search_term="india"):
                                                text=search_term,
                                                method="flickr.photos.search",
                                                api_key=config['flickr']['key'],
-                                               format="json")
+                                               format="json",
+                                               privacy_filter=1)
     logging.info("Images from flickr page %s ", page)
     response = requests.get(final_url)
     images = [{'source_url': x.get('url_o'),
