@@ -32,7 +32,7 @@ def flickr(page=1, per_page=500, search_term="india"):
     response = requests.get(final_url)
     images = [{'source_url': x.get('url_o'),
                'id': x.get('id')} for x in response.json()['photos']['photo']]
-    if response.json()['photos']['pages'] > page and page <= config['flickr']['max_page']:
+    if response.json()['photos']['pages'] > page and page <= int(config['flickr']['max_page']):
         flickr.delay(page=page+1, per_page=500, search_term=search_term)
     get_asset_files.delay(images, search_term)
 
