@@ -15,6 +15,9 @@ Create a file called config.ini and add the following to it:
 [flickr]
 url = 'https://api.flickr.com/services/rest?sort={sort}&parse_tags=1&content_type={content_type}&extras={extras}&per_page={per_page}&page={page}&text={text}&method={method}&api_key={api_key}&format={format}&nojsoncallback=1&privacy_filter={privacy_filter}'
 key = ''
+max_page = 4
+per_page = 500
+path = '/home/chaitanya/'
 ```
 
 You have to generate a Flickr API Key and place it in this file.

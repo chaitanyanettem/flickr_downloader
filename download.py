@@ -1,6 +1,7 @@
 import requests
 from celery import Celery
 import logging
+import mimetypes
 from configobj import ConfigObj
 import uuid
 config = ConfigObj('config.ini')
@@ -31,7 +32,7 @@ def flickr(page=1, per_page=500, search_term="india"):
     response = requests.get(final_url)
     images = [{'source_url': x.get('url_o'),
                'id': x.get('id')} for x in response.json()['photos']['photo']]
-    if response.json()['photos']['pages'] > page and page < 5:
+    if response.json()['photos']['pages'] > page and page <= config['flickr']['max_page']:
         flickr.delay(page=page+1, per_page=500, search_term=search_term)
     get_asset_files.delay(images, search_term)
 
@@ -43,7 +44,9 @@ def get_asset_files(assets, search_term):
         if url:
             logging.info(url)
             ifile = requests.get(image['source_url'], stream=True)
-            with open("download/" + search_term + "/" + str(str(uuid.uuid4()) + image['id']), 'wb') as _file:
+            content_type = ifile.headers['Content-Type']
+            extension = mimetypes.guess_extension(content_type)
+            with open(config['flickr']['path'] + search_term + "/" + str(str(uuid.uuid4()) + image['id']) + extension, 'wb') as _file:
                 for chunk in ifile:
                     _file.write(chunk)
         else:
